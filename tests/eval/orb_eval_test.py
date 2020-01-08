@@ -6,6 +6,7 @@ from allennlp_rc.eval.orb_utils import get_metric_drop
 from allennlp_rc.eval.squad2_eval import get_metric_score as get_metric_squad2
 from allennlp_rc.eval.narrativeqa_eval import get_metric_score as get_metric_narrativeqa
 
+
 class TestSQUAD1:
     def test_spaces_are_ignored(self):
         assert _normalize_answer_squad("abcd") == _normalize_answer_squad("abcd  ")
@@ -45,26 +46,29 @@ class TestDROP:
 
     def test_bag_alignment_is_optimal(self):
         assert get_metric_drop(["Thomas Jefferson", "Thomas Davidson Arquette"],
-                                     [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
+                               [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
         assert get_metric_drop(["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.4)
 
     def test_multiple_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"],
-                                     [["David Thomas"], ["Thomas Jefferson"], ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
+        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas"], ["Thomas Jefferson"],
+                                                           ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
 
     def test_long_gold_spans(self):
         assert get_metric_drop(["Thomas David Arquette"],
-                                     [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
+                               [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
 
 
 class TestNarrativeQA:
     def test_ngrams(self):
         assert get_metric_narrativeqa("David Thomas was eating an apple",
-                                            ["David Thomas was eating an apple and fell to the ground"]) == (0.43, 0.43, 0.57, 0.75, 1.0, 0.6)
+                                      ["David Thomas was eating an apple and fell to the ground"]) == \
+            (0.43, 0.43, 0.57, 0.75, 1.0, 0.6)
         assert get_metric_narrativeqa("David Thomas was eating an apple and fell to the ground",
-                                            ["David Thomas was eating an apple", "he fell to the ground"]) == (0.55, 0.38, 0.92, 0.75, 0.6, 1.0)
+                                      ["David Thomas was eating an apple", "he fell to the ground"]) == \
+            (0.55, 0.38, 0.92, 0.75, 0.6, 1.0)
         assert get_metric_narrativeqa("David Thomas was eating an apple and fell to the ground",
-                                            ["David Thomas was eating an apple and fell to the ground"]) == (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+                                      ["David Thomas was eating an apple and fell to the ground"]) == \
+            (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 
 
 class TestQuoREF:
@@ -88,16 +92,16 @@ class TestQuoREF:
 
     def test_bag_alignment_is_optimal(self):
         assert get_metric_drop(["Thomas Jefferson", "Thomas Davidson Arquette"],
-                                     [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
+                               [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
         assert get_metric_drop(["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.4)
 
     def test_multiple_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"],
-                                     [["David Thomas"], ["Thomas Jefferson"], ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
+        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas"], ["Thomas Jefferson"],
+                                                           ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
 
     def test_long_gold_spans(self):
         assert get_metric_drop(["Thomas David Arquette"],
-                                     [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
+                               [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
 
 
 class TestSQUAD2:
