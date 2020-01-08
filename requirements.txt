@@ -2,3 +2,4 @@
 git+git://github.com/matt-gardner/allennlp.git@8f54c4b0b1d403275acaa496dd9df80434a75c79
 
 word2number>=1.1
+py-rouge==1.1
