@@ -65,18 +65,3 @@ def get_metric_score(prediction, gold_answers):
     exact_scores = max(compute_exact(a, prediction) for a in gold_answers)
     f1_scores = max(compute_f1(a, prediction) for a in gold_answers)
     return exact_scores, f1_scores
-
-
-def evaluate_squad2(prediction, ground_truths, metrics):
-    prediction = prediction[0] if isinstance(prediction, list) else prediction
-    exact_match, f1 = get_metric_score(prediction, [truth[0] for truth in ground_truths])
-    metrics["squad2"]["exact_match"] = (
-        metrics["squad2"]["exact_match"] + exact_match
-        if "exact_match" in metrics["squad2"]
-        else exact_match
-    )
-    metrics["squad2"]["f1"] = metrics["squad2"]["f1"] + f1 if "f1" in metrics["squad2"] else f1
-    metrics["squad2"]["total"] = (
-        metrics["squad2"]["total"] + 1 if "total" in metrics["squad2"] else 1
-    )
-    return metrics

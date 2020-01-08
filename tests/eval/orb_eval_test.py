@@ -5,6 +5,8 @@ from allennlp_rc.eval.orb_utils import get_metric_squad
 from allennlp_rc.eval.orb_utils import get_metric_drop
 from allennlp_rc.eval.squad2_eval import get_metric_score as get_metric_squad2
 from allennlp_rc.eval.narrativeqa_eval import get_metric_score as get_metric_narrativeqa
+from tests import FIXTURES_ROOT
+import os
 
 
 class TestSQUAD1:
@@ -156,3 +158,16 @@ class TestSQUAD2:
         assert get_metric_squad2("", ["news"]) == (0.0, 0.0)
         assert get_metric_squad2("news", [""]) == (0.0, 0.0)
         assert get_metric_squad2("", [""]) == (1.0, 1.0)
+
+    def test_functional_case(self):
+        assert get_metric_squad2("This was a triumph", ["a triumph"]) == (0.0, 0.5)
+
+class TestIntegration:
+    def test_sample_results(self):
+        gold_file = FIXTURES_ROOT / "data" / "orb" / "sample_input.jsonl"
+        predictions_file = FIXTURES_ROOT / "data" / "orb" / "sample_predictions.json"
+        result = os.system(
+            f"python -m allennlp_rc.eval.orb_eval --dataset_file {gold_file} "
+            f"--prediction_file {predictions_file} --metrics_output_file /tmp/output.json"
+        )
+        assert result == 0
