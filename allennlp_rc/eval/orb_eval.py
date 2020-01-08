@@ -26,8 +26,10 @@ def read_labels(jsonl_file):
         for line in f:
             data = json.loads(line)
             for qa_pair in data["qa_pairs"]:
-                qid_answer_map[str(qa_pair["qid"])] = {"dataset": qa_pair["dataset"],
-                                                       "answers": qa_pair["answers"]}
+                qid_answer_map[str(qa_pair["qid"])] = {
+                    "dataset": qa_pair["dataset"],
+                    "answers": qa_pair["answers"],
+                }
     return qid_answer_map
 
 
@@ -42,16 +44,30 @@ def compute_averages(all_metrics):
 
 
 def evaluate(answers, predictions):
-    metrics = {"drop": {}, "squad1": {}, "squad2": {}, "newsqa": {},
-               "quoref": {}, "ropes": {}, "narrativeqa": {}, "duorc": {},
-               "drop_syn": {}, "squad1_syn": {}, "quoref_syn": {}, "newsqa_syn": {},
-               "ropes_syn": {}, "duorc_syn": {}}
+    metrics = {
+        "drop": {},
+        "squad1": {},
+        "squad2": {},
+        "newsqa": {},
+        "quoref": {},
+        "ropes": {},
+        "narrativeqa": {},
+        "duorc": {},
+        "drop_syn": {},
+        "squad1_syn": {},
+        "quoref_syn": {},
+        "newsqa_syn": {},
+        "ropes_syn": {},
+        "duorc_syn": {},
+    }
     for qid, ground_truth_dict in answers.items():
         if qid in predictions:
             predicted_answer = predictions[qid]
             dataset_name = ground_truth_dict["dataset"].lower()
             try:
-                metrics = evaluate_dataset(dataset_name, predicted_answer, ground_truth_dict["answers"], metrics)
+                metrics = evaluate_dataset(
+                    dataset_name, predicted_answer, ground_truth_dict["answers"], metrics
+                )
             except KeyError:
                 print("Incorrect dataset name at : {0}.".format(dataset_name))
                 exit(0)
@@ -81,15 +97,15 @@ def process_for_output(metrics):
     return processed_metrics
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Evaluation for ORB')
-    parser.add_argument('--dataset_file', type=str, help='Dataset File')
-    parser.add_argument('--prediction_file', type=str, help='Prediction File')
-    parser.add_argument('--metrics_output_file', type=str, help='Metrics File')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Evaluation for ORB")
+    parser.add_argument("--dataset_file", type=str, help="Dataset File")
+    parser.add_argument("--prediction_file", type=str, help="Prediction File")
+    parser.add_argument("--metrics_output_file", type=str, help="Metrics File")
     args = parser.parse_args()
 
     answers = read_labels(args.dataset_file)
     predictions = read_predictions(args.prediction_file)
     metrics = evaluate(answers, predictions)
     processed_metrics = process_for_output(metrics)
-    json.dump(processed_metrics, open(args.metrics_output_file, 'w'), indent=2)
+    json.dump(processed_metrics, open(args.metrics_output_file, "w"), indent=2)

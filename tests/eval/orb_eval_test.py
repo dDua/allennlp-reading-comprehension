@@ -34,41 +34,66 @@ class TestDROP:
         assert get_metric_drop("This was a triumph", ["tHIS Was A TRIUMPH"]) == (1.0, 1.0)
 
     def test_long_answers(self):
-        assert get_metric_drop("David Thomas", ["Thomas David Arquette Thomas David Arquette Thomas \
-                    David Arquette Thomas David Arquette"]) == (0.0, 0.8)
+        assert (
+            get_metric_drop(
+                "David Thomas",
+                [
+                    "Thomas David Arquette Thomas David Arquette Thomas \
+                    David Arquette Thomas David Arquette"
+                ],
+            )
+            == (0.0, 0.8)
+        )
 
     def test_span_order_is_ignored(self):
-        assert get_metric_drop(["athlete", "unprofessional"], [["unprofessional", "athlete"]]) == (1.0, 1.0)
-        assert get_metric_drop(["algebra", "arithmetic"], [["arithmetic", "algebra", "geometry"]]) == (0.0, 0.67)
+        assert get_metric_drop(["athlete", "unprofessional"], [["unprofessional", "athlete"]]) == (
+            1.0,
+            1.0,
+        )
+        assert get_metric_drop(
+            ["algebra", "arithmetic"], [["arithmetic", "algebra", "geometry"]]
+        ) == (0.0, 0.67)
 
     def test_word_order_is_not_ignored(self):
-        assert get_metric_drop(["athlete unprofessional"], [["unprofessional athlete"]]) == (0.0, 1.0)
+        assert get_metric_drop(["athlete unprofessional"], [["unprofessional athlete"]]) == (
+            0.0,
+            1.0,
+        )
 
     def test_bag_alignment_is_optimal(self):
-        assert get_metric_drop(["Thomas Jefferson", "Thomas Davidson Arquette"],
-                               [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
-        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.4)
+        assert get_metric_drop(
+            ["Thomas Jefferson", "Thomas Davidson Arquette"], [["David Thomas", "Thomas Jefferson"]]
+        ) == (0.0, 0.7)
+        assert get_metric_drop(
+            ["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]
+        ) == (0.0, 0.4)
 
     def test_multiple_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas"], ["Thomas Jefferson"],
-                                                           ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
+        assert get_metric_drop(
+            ["Thomas David Arquette"],
+            [["David Thomas"], ["Thomas Jefferson"], ["David Thomas"], ["Thomas David"]],
+        ) == (0.0, 0.8)
 
     def test_long_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"],
-                               [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
+        assert get_metric_drop(
+            ["Thomas David Arquette"], [["David Thomas was eating an apple and fell to the ground"]]
+        ) == (0.0, 0.33)
 
 
 class TestNarrativeQA:
     def test_ngrams(self):
-        assert get_metric_narrativeqa("David Thomas was eating an apple",
-                                      ["David Thomas was eating an apple and fell to the ground"]) == \
-            (0.43, 0.43, 0.57, 0.75, 1.0, 0.6)
-        assert get_metric_narrativeqa("David Thomas was eating an apple and fell to the ground",
-                                      ["David Thomas was eating an apple", "he fell to the ground"]) == \
-            (0.55, 0.38, 0.92, 0.75, 0.6, 1.0)
-        assert get_metric_narrativeqa("David Thomas was eating an apple and fell to the ground",
-                                      ["David Thomas was eating an apple and fell to the ground"]) == \
-            (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+        assert get_metric_narrativeqa(
+            "David Thomas was eating an apple",
+            ["David Thomas was eating an apple and fell to the ground"],
+        ) == (0.43, 0.43, 0.57, 0.75, 1.0, 0.6)
+        assert get_metric_narrativeqa(
+            "David Thomas was eating an apple and fell to the ground",
+            ["David Thomas was eating an apple", "he fell to the ground"],
+        ) == (0.55, 0.38, 0.92, 0.75, 0.6, 1.0)
+        assert get_metric_narrativeqa(
+            "David Thomas was eating an apple and fell to the ground",
+            ["David Thomas was eating an apple and fell to the ground"],
+        ) == (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 
 
 class TestQuoREF:
@@ -80,28 +105,50 @@ class TestQuoREF:
         assert get_metric_drop("This was a triumph", ["tHIS Was A TRIUMPH"]) == (1.0, 1.0)
 
     def test_long_answers(self):
-        assert get_metric_drop("David Thomas", ["Thomas David Arquette Thomas David Arquette Thomas \
-                    David Arquette Thomas David Arquette"]) == (0.0, 0.8)
+        assert (
+            get_metric_drop(
+                "David Thomas",
+                [
+                    "Thomas David Arquette Thomas David Arquette Thomas \
+                    David Arquette Thomas David Arquette"
+                ],
+            )
+            == (0.0, 0.8)
+        )
 
     def test_span_order_is_ignored(self):
-        assert get_metric_drop(["athlete", "unprofessional"], [["unprofessional", "athlete"]]) == (1.0, 1.0)
-        assert get_metric_drop(["algebra", "arithmetic"], [["arithmetic", "algebra", "geometry"]]) == (0.0, 0.67)
+        assert get_metric_drop(["athlete", "unprofessional"], [["unprofessional", "athlete"]]) == (
+            1.0,
+            1.0,
+        )
+        assert get_metric_drop(
+            ["algebra", "arithmetic"], [["arithmetic", "algebra", "geometry"]]
+        ) == (0.0, 0.67)
 
     def test_word_order_is_not_ignored(self):
-        assert get_metric_drop(["athlete unprofessional"], [["unprofessional athlete"]]) == (0.0, 1.0)
+        assert get_metric_drop(["athlete unprofessional"], [["unprofessional athlete"]]) == (
+            0.0,
+            1.0,
+        )
 
     def test_bag_alignment_is_optimal(self):
-        assert get_metric_drop(["Thomas Jefferson", "Thomas Davidson Arquette"],
-                               [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.7)
-        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]) == (0.0, 0.4)
+        assert get_metric_drop(
+            ["Thomas Jefferson", "Thomas Davidson Arquette"], [["David Thomas", "Thomas Jefferson"]]
+        ) == (0.0, 0.7)
+        assert get_metric_drop(
+            ["Thomas David Arquette"], [["David Thomas", "Thomas Jefferson"]]
+        ) == (0.0, 0.4)
 
     def test_multiple_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"], [["David Thomas"], ["Thomas Jefferson"],
-                                                           ["David Thomas"], ["Thomas David"]]) == (0.0, 0.8)
+        assert get_metric_drop(
+            ["Thomas David Arquette"],
+            [["David Thomas"], ["Thomas Jefferson"], ["David Thomas"], ["Thomas David"]],
+        ) == (0.0, 0.8)
 
     def test_long_gold_spans(self):
-        assert get_metric_drop(["Thomas David Arquette"],
-                               [["David Thomas was eating an apple and fell to the ground"]]) == (0.0, 0.33)
+        assert get_metric_drop(
+            ["Thomas David Arquette"], [["David Thomas was eating an apple and fell to the ground"]]
+        ) == (0.0, 0.33)
 
 
 class TestSQUAD2:
