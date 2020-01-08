@@ -45,7 +45,7 @@ def evaluate(answers, predictions):
     metrics = {"drop": {}, "squad1": {}, "squad2": {}, "newsqa": {},
                "quoref": {}, "ropes": {}, "narrativeqa": {}, "duorc": {},
                "drop_syn": {}, "squad1_syn": {}, "quoref_syn": {}, "newsqa_syn": {},
-               "ropes_syn": {},  "duorc_syn": {}}
+               "ropes_syn": {}, "duorc_syn": {}}
     for qid, ground_truth_dict in answers.items():
         if qid in predictions:
             predicted_answer = predictions[qid]
@@ -77,7 +77,7 @@ def process_for_output(metrics):
             elif metric_name == "exact_match" and dataset == "ropes":
                 average_f1 += metric_value
                 f1_instance_count += 1
-    processed_metrics["average_f1"] = round(average_f1/f1_instance_count, 4)
+    processed_metrics["average_f1"] = round(average_f1 / f1_instance_count, 4)
     return processed_metrics
 
 

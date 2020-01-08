@@ -75,4 +75,3 @@ def evaluate_dataset(dataset_name, prediction, ground_truths, metrics):
         raise ValueError
 
     return metrics
-

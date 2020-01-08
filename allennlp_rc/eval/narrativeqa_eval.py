@@ -59,4 +59,4 @@ def get_metric_score(prediction, ground_truths):
     rouge_l_score = metric_max_over_ground_truths(rouge_l, prediction, ground_truths, tokenize=False)
 
     return bleu_1_score, bleu_4_score, meteor_score, rouge_l_score['rouge-l']['f'], \
-           rouge_l_score['rouge-l']['p'], rouge_l_score['rouge-l']['r']
+        rouge_l_score['rouge-l']['p'], rouge_l_score['rouge-l']['r']
