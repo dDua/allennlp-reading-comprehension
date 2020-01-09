@@ -162,6 +162,7 @@ class TestSQUAD2:
     def test_functional_case(self):
         assert get_metric_squad2("This was a triumph", ["a triumph"]) == (0.0, 0.5)
 
+
 class TestIntegration:
     def test_sample_results(self):
         gold_file = FIXTURES_ROOT / "data" / "orb" / "sample_input.jsonl"
